@@ -33,12 +33,12 @@ namespace SpotifyOverlay.Classes
             if (spotifyClient == null) return;
 
             var currentlyPlaying =
-                await spotifyClient
-                    .Player
+                await spotifyClient?
+                    .Player?
                     .GetCurrentlyPlaying(
                         new PlayerCurrentlyPlayingRequest(PlayerCurrentlyPlayingRequest.AdditionalTypes.Track)
                     );
-            if (currentlyPlaying.Item is FullTrack currentTrack)
+            if (currentlyPlaying?.Item is FullTrack currentTrack)
             {
                 this.currentTrack = new SpotifyTrack
                 {
