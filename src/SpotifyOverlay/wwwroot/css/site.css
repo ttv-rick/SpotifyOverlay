@@ -1,0 +1,100 @@
+body {
+    font-family: Helvetica, Arial, serif;
+    font-size: 3vmin;
+}
+
+p {
+    margin: 0;
+}
+
+.nowplaying {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+}
+
+.display {
+    padding: 0;
+}
+
+.art {
+    width: 500px;
+    height: 500px;
+    z-index: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.coverart {
+    width: 500px;
+    height: 500px;
+    z-index: 2;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(black), color-stop(0.5, rgba(0, 0, 0, 0.3)), color-stop(0.6, rgba(0, 0, 0, 0.6)), color-stop(0.9, rgba(0, 0, 0, 0.9)));
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.text {
+    position: absolute;
+    font-family: Droid Sans, Helvetica Neue, Helvetica, Arial;
+    z-index: 3;
+    left: 0;
+    bottom: 0;
+    padding: 0.8em;
+    /*line-height: 1.5rem;*/
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.artist,
+.album {
+    font-size: 2.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.8);
+    width: 480px;
+}
+
+.album {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.track {
+    font-size: 2.3rem;
+    font-weight: 700;
+    padding-right: 20px;
+    margin: 0.2rem 0 0;
+    line-height: 1;
+    color: white;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #1ecd97;
+    border-radius: 2em;
+    border: 0.2em solid #1ecd97;
+    color: white;
+    cursor: pointer;
+    font-size: 3vmin;
+    padding: 0.7em 1.5em;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+    margin: 0 auto;
+}
+
+.btn:hover {
+    border: 0.2em solid #1ed760;
+    background: #1ed760;
+}
+
+.loginButton {
+    background-color: #1ed760;
+    padding: 0 15px;
+    border-radius: 20px;
+    color: white;
+    border: 1px solid #1ed760;
+    letter-spacing: 1px;
+}

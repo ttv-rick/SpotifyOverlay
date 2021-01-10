@@ -1,0 +1,116 @@
+﻿@page "/"
+@using SpotifyAPI.Web
+@using SpotifyOverlay.Classes
+@using System.Threading
+@using System.IO
+@inject NavigationManager navManager
+@inject SpotifyService spotifyService
+@inject SpotifyConfig spotifyConfig
+@if (!spotifyService.IsAuthed)
+{
+    <p>you shouldn't be here</p>
+}
+else if (track == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <div class="nowplaying">
+            <div class="display">
+                <div class="art" style="background-image: url('@track.AlbumArtUrl');"></div>
+                <div class="coverart"></div>
+                <div class="text">
+                    <p class="artist">@track.Artist</p>
+                    <p class="album">@track.Album</p>
+                    <p class="track">@track.Name</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    private SpotifyTrack track = null;
+    private Uri authUri;
+
+    protected override void OnInitialized()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await spotifyService.PreAuth();
+        if (!spotifyService.IsAuthed)
+            navManager.NavigateTo("/login");
+        
+        spotifyService.TrackHasChanged += TrackHasChanged;
+
+    //     if (spotifyService.IsAuthed) return Task.CompletedTask;
+    //
+    //     var previousToken =
+    //         File.Exists("token.txt")
+    //             ? File.ReadAllText("token.txt")?.Split('\t', StringSplitOptions.RemoveEmptyEntries)
+    //             : null;
+    //     
+    //     if (previousToken != null && previousToken.Any())
+    //     {
+    //         spotifyService.IsAuthed = true;
+    //         var config = SpotifyClientConfig
+    //             .CreateDefault()
+    //             .WithAuthenticator(
+    //                 new ClientCredentialsAuthenticator(
+    //                     spotifyConfig.ClientId,
+    //                     spotifyConfig.ClientSecret,
+    //                     new ClientCredentialsTokenResponse
+    //                     {
+    //                         AccessToken = previousToken[0],
+    //                         ExpiresIn = int.Parse(previousToken[1]),
+    //                         TokenType = previousToken[2]
+    //                     })
+    //             );
+    //        // spotifyService.SetSpotifyClient(new SpotifyClient(config));
+    //         return Task.CompletedTask;
+    // // return spotifyService.SetCurrentTrackAsync(CancellationToken.None);
+    // }
+    // else
+    // {
+    //     var uri = new Uri(navManager.Uri);
+    //     var maxLen = Math.Min(1, uri.Fragment.Length);
+    //     var fragmentParams = uri.Fragment.Substring(maxLen)?
+    //         .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+    //         .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+    //         .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+    //
+    //     spotifyService.IsAuthed = fragmentParams.ContainsKey("access_token");
+    //     if (!spotifyService.IsAuthed) return Task.CompletedTask;
+    //
+    //     File.WriteAllText("token.txt", $"{fragmentParams["access_token"]}\t{fragmentParams["expires_in"]}\t{fragmentParams["token_type"]}");
+    //
+    //     var config = SpotifyClientConfig
+    //         .CreateDefault()
+    //         .WithAuthenticator(
+    //             new ClientCredentialsAuthenticator(
+    //                 spotifyConfig.ClientId,
+    //                 spotifyConfig.ClientSecret,
+    //                 new ClientCredentialsTokenResponse
+    //                 {
+    //                     AccessToken = fragmentParams["access_token"],
+    //                     ExpiresIn = int.Parse(fragmentParams["expires_in"]),
+    //                     TokenType = fragmentParams["token_type"]
+    //                 })
+    //         );
+    //     //spotifyService.SetSpotifyClient(new SpotifyClient(config));
+    //     return Task.CompletedTask;
+    //     //return spotifyService.SetCurrentTrackAsync(CancellationToken.None);
+    // }
+    }
+
+    private void TrackHasChanged(SpotifyTrack track)
+    {
+        this.track = track;
+        InvokeAsync(StateHasChanged);
+    }
+}

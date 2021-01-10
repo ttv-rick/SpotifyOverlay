@@ -1,0 +1,26 @@
+@page "/Login"
+@using SpotifyAPI.Web
+@using SpotifyOverlay.Classes
+@inject NavigationManager navManager
+@inject SpotifyService spotifyService
+@inject SpotifyConfig spotifyConfig
+
+ <a class="btn" href="@authUri">
+        Login via Spotify
+    </a>
+
+@code {
+    private Uri authUri;
+
+    protected override void OnInitialized()
+    {
+        var clientId = spotifyConfig.ClientId;
+        var callbackUrl = new Uri(navManager.ToAbsoluteUri(navManager.BaseUri) + "callback");
+
+        var loginRequest = new LoginRequest(callbackUrl, clientId, LoginRequest.ResponseType.Code)
+        {
+            Scope = new[] {Scopes.UserReadCurrentlyPlaying}
+        };
+        authUri = loginRequest.ToUri();
+    }
+}
